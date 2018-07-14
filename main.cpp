@@ -2,6 +2,7 @@
 #include <string>
 #include <regex>
 #include "int8.h"
+#include "virtualMachine.h"
 
 bool checkType(std::string type, std::string value)
 {
@@ -18,13 +19,14 @@ bool checkType(std::string type, std::string value)
     return false;
 }
 
-bool validate(std::string str)
+bool validate(std::string str, VirtualMachine &vm)
 {
     std::cmatch result;
     std::regex command("(;|push|pop|dump|assert|add|sub|mul|div|mod|print|exit)"
                        "([\\w\\W]*)");
     if (std::regex_match(str.c_str(), result, command)) {
-        if (result[1] == "push" || result[1] == "assert") {
+        std::string comand = result[1];
+        if (comand == "push" || comand == "assert") {
             std::regex regular("(push|assert)"
                                "( )+"
                                "(int8|int16|int32|float|double)"
@@ -32,9 +34,17 @@ bool validate(std::string str)
                                "(\\d+|[0-9]*\\.[0-9]+)"
                                "((\\))|(\\) *;.*))");
             if (std::regex_match(str.c_str(), result, regular))
-                return (checkType(result[3], result[5]));
+                if (checkType(result[3], result[5]))
+                {
+                    vm.executeComand(comand, result[3], result[5]);
+                    return true;
+                }
         }
-        else return true;
+        else
+        {
+//            vm.executeComand(comand, 0, 0); // Does not vork for comand whithout argument
+            return true;
+        }
     }
     return false;
 }
@@ -51,12 +61,13 @@ int main(int argc, char *argv[])
     {
         if (argc == 1)
         {
+            VirtualMachine vm;
             std::string var = "";
             while (var != "end")
             {
                 std::getline(std::cin, var);
                 std::cout << var << std::endl;
-                std::cout << validate(var) << std::endl;
+                std::cout << validate(var, vm) << std::endl;
             }
         }
     }
