@@ -1,7 +1,5 @@
 #include <iostream>
-#include <string>
 #include <regex>
-#include "int8.h"
 #include "virtualMachine.h"
 
 bool checkType(std::string type, std::string value)
@@ -11,7 +9,7 @@ bool checkType(std::string type, std::string value)
          std::regex regular("[0-9]+");
          return std::regex_match(value.c_str(), result, regular);
     }
-    else if (type == "float" || type == "double"){
+    else if (type == "float" || type == "double") {
         std::regex regular("(\\d+|[0-9]*\\.[0-9]+)");
         return std::regex_match(value.c_str(), result, regular);
     }
@@ -34,42 +32,47 @@ bool validate(std::string str, VirtualMachine &vm)
                                "(\\d+|[0-9]*\\.[0-9]+)"
                                "((\\))|(\\) *;.*))");
             if (std::regex_match(str.c_str(), result, regular))
-                if (checkType(result[3], result[5]))
-                {
+                if (checkType(result[3], result[5])) {
                     vm.executeComand(comand, result[3], result[5]);
                     return true;
+                } else {
+                    return false;
                 }
         }
-        else
-        {
-//            vm.executeComand(comand, 0, 0); // Does not vork for comand whithout argument
+        else if (comand != "exit") {
+            vm.executeComand(comand);
             return true;
         }
+        else
+            exit(1);
     }
     return false;
 }
 
-int readFile()
+int readFile(VirtualMachine &vm)
 {
+    return 1;
+}
+
+int readStdin(VirtualMachine &vm)
+{
+    std::string var = "";
+    while (var != "end")
+    {
+        std::getline(std::cin, var);
+        std::cout << var << std::endl;
+        std::cout << validate(var, vm) << std::endl;
+    }
     return 1;
 }
 
 int main(int argc, char *argv[])
 {
-    std::cout << "Hello world" << std::endl;
-    if (argc < 3)
-    {
-        if (argc == 1)
-        {
-            VirtualMachine vm;
-            std::string var = "";
-            while (var != "end")
-            {
-                std::getline(std::cin, var);
-                std::cout << var << std::endl;
-                std::cout << validate(var, vm) << std::endl;
-            }
-        }
-    }
+    std::cout << "The virtual machine welcomes you." << std::endl;
+    static VirtualMachine& vm = VirtualMachine::instance();
+    if (argc == 2)
+        readFile(vm);
+    else if (argc == 1)
+        readStdin(vm);
     return 0;
 }

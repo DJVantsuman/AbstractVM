@@ -15,15 +15,39 @@
 
 #include <string>
 #include <iostream>
+#include <stack>
+#include "ioperand.h"
+#include "eoperandtype.h"
+#include "factory.h"
+#include "int8.h"
 
 class VirtualMachine {
-public:
+private:
     VirtualMachine();
     VirtualMachine(VirtualMachine const &src);
     ~VirtualMachine();
     VirtualMachine &operator=(VirtualMachine const &rhs);
 
-    void executeComand(std::string comand, std::string type = 0, std::string value = 0);
+    std::stack<const IOperand*> stack;
+    int size;
+
+    const IOperand *getOperand(std::string type, std::string value);
+
+public:
+    static VirtualMachine  &instance();
+    void executeComand(std::string command, std::string type = "", std::string value = "");
+
+private:
+    void push(const IOperand *operand);
+    void pop();
+    void dump();
+    void assert(const IOperand *operand);
+    void add();
+    void sub();
+    void mul();
+    void div();
+    void mod();
+    void print();
 };
 
 #endif

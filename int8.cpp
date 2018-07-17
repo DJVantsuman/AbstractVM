@@ -20,7 +20,6 @@ Int8    &Int8::operator=( Int8 const &rhs )
 
 IOperand const * Int8::operator+( IOperand const &rhs ) const
 {
-    return factory.createOperand(this->_type, this->_value);
 }
 
 IOperand const * Int8::operator-( IOperand const &rhs ) const

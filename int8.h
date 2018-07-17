@@ -3,7 +3,6 @@
 
 #include "ioperand.h"
 #include "eoperandtype.h"
-#include "factory.h"
 #include <string>
 
 class Int8 : public IOperand
@@ -12,7 +11,6 @@ class Int8 : public IOperand
         std::string         _value;
         eOperandType const  _type = eOperandType::INT8;
         int                 _precision = 1;
-        Factory const       factory;
 
         Int8();
         Int8(Int8 const &src);

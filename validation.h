@@ -8,11 +8,12 @@ class Validation
 public:
     Validation();
     ~Validation();
-    int check(std::string str);
+    int check(std::string type, std::string value);
 
 private:
-    int checkLexical(std::string str);
-    int checkType(std::string str);
+    int checkInt(std::string value);
+    int checkFloat(std::string value);
+    int checkDouble(std::string value);
 };
 
 #endif // VALIDATION_H
