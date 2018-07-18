@@ -16,6 +16,7 @@
 #include <string>
 #include <iostream>
 #include <stack>
+#include <vector>
 #include "ioperand.h"
 #include "eoperandtype.h"
 #include "factory.h"
@@ -28,7 +29,7 @@ private:
     ~VirtualMachine();
     VirtualMachine &operator=(VirtualMachine const &rhs);
 
-    std::stack<const IOperand*> stack;
+    std::deque<const IOperand*> stack;
     int size;
 
     const IOperand *getOperand(std::string type, std::string value);

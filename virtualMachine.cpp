@@ -54,17 +54,18 @@ const IOperand *VirtualMachine::getOperand(std::string type, std::string value) 
 }
 
 void VirtualMachine::push(const IOperand *operand) {
-    stack.push(operand);
+    stack.push_front(operand);
     size++;
 }
 
 void VirtualMachine::pop() {
-    stack.pop();
+    stack.pop_front();
     size--;
 }
 
 void VirtualMachine::dump() {
-
+    for (auto it = stack.begin(); it != stack.end(); it++)
+        std::cout << (*it)->toString() << std::endl;
 }
 
 void VirtualMachine::assert(const IOperand *operand) {

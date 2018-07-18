@@ -1,3 +1,4 @@
+#include <iostream>
 #include "int8.h"
 
 Int8::Int8(){ }
@@ -44,5 +45,5 @@ IOperand const * Int8::operator%( IOperand const &rhs ) const
 
 std::string const & Int8::toString( void ) const
 {
-    return "";
+    return _value;
 }
