@@ -1,4 +1,4 @@
-#include "int16.h"
+#include "Int16.h"
 
 Int16::Int16(){ }
 Int16::Int16(Int16 const &src) { *this = src; }
@@ -20,6 +20,7 @@ Int16    &Int16::operator=( Int16 const &rhs )
 
 IOperand const * Int16::operator+( IOperand const &rhs ) const
 {
+    return new Int16("");
 }
 
 IOperand const * Int16::operator-( IOperand const &rhs ) const

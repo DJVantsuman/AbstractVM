@@ -16,10 +16,10 @@
 #include <string>
 #include <iostream>
 #include <stack>
-#include <vector>
 #include "ioperand.h"
 #include "eoperandtype.h"
 #include "factory.h"
+#include "VMException.h"
 #include "int8.h"
 
 class VirtualMachine {
@@ -37,6 +37,7 @@ private:
 public:
     static VirtualMachine  &instance();
     void executeComand(std::string command, std::string type = "", std::string value = "");
+    void mathIt(eOperandType type, std::string number);
 
 private:
     void push(const IOperand *operand);

@@ -51,6 +51,11 @@ const IOperand *VirtualMachine::getOperand(std::string type, std::string value) 
         return Factory::instance().createOperand(eOperandType::FLOAT, value);
     else if (type == "double")
         return Factory::instance().createOperand(eOperandType::DOUBLE, value);
+    return nullptr;
+}
+
+void VirtualMachine::mathIt(eOperandType type, std::string number) {
+
 }
 
 void VirtualMachine::push(const IOperand *operand) {
@@ -73,19 +78,65 @@ void VirtualMachine::assert(const IOperand *operand) {
 }
 
 void VirtualMachine::add() {
-
+    if(stack.size() > 1) {
+        const  IOperand *newOperand;
+        if (stack[0]->getPrecision() > stack[1]->getPrecision())
+            newOperand = stack[0]->operator+(*stack[1]);
+        else
+            newOperand = stack[1]->operator+(*stack[0]);
+        pop();
+        pop();
+        push(newOperand);
+    } else throw (VMException("EXCEPTION: The stack is composed of strictly "
+                              "less that two values when an arithmetic "
+                              "instruction is executed."));
 }
 
 void VirtualMachine::sub() {
-
+    if(stack.size() > 1) {
+        const  IOperand *newOperand;
+        if (stack[0]->getPrecision() > stack[1]->getPrecision())
+            newOperand = stack[0]->operator-(*stack[1]);
+        else
+            newOperand = stack[1]->operator-(*stack[0]);
+        pop();
+        pop();
+        push(newOperand);
+    } else throw (VMException("EXCEPTION: The stack is composed of strictly "
+                                      "less that two values when an arithmetic "
+                                      "instruction is executed."));
 }
 
 void VirtualMachine::mul() {
-
+    if(stack.size() > 1) {
+        const  IOperand *newOperand;
+        if (stack[0]->getPrecision() > stack[1]->getPrecision())
+            newOperand = stack[0]->operator*(*stack[1]);
+        else
+            newOperand = stack[1]->operator*(*stack[0]);
+        pop();
+        pop();
+        push(newOperand);
+    } else throw (VMException("EXCEPTION: The stack is composed of strictly "
+                                      "less that two values when an arithmetic "
+                                      "instruction is executed."));
 }
 
 void VirtualMachine::div() {
-
+    if (stack[1]->getValue() == "0" || stack[1]->getValue() == "0.0")
+        throw (VMException("EXCEPTION: Division by 0."));
+    else if(stack.size() > 1) {
+        const  IOperand *newOperand;
+        if (stack[0]->getPrecision() > stack[1]->getPrecision())
+            newOperand = stack[0]->operator/(*stack[1]);
+        else
+            newOperand = stack[1]->operator/(*stack[0]);
+        pop();
+        pop();
+        push(newOperand);
+    } else throw (VMException("EXCEPTION: The stack is composed of strictly "
+                                      "less that two values when an arithmetic "
+                                      "instruction is executed."));
 }
 
 void VirtualMachine::mod() {

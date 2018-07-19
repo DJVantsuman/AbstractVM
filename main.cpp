@@ -1,6 +1,7 @@
 #include <iostream>
 #include <regex>
 #include "virtualMachine.h"
+#include "VMException.h"
 
 bool checkType(std::string type, std::string value)
 {
@@ -70,9 +71,14 @@ int main(int argc, char *argv[])
 {
     std::cout << "The virtual machine welcomes you." << std::endl;
     static VirtualMachine& vm = VirtualMachine::instance();
-    if (argc == 2)
-        readFile(vm);
-    else if (argc == 1)
-        readStdin(vm);
+    try {
+        if (argc == 2)
+            readFile(vm);
+        else if (argc == 1)
+            readStdin(vm);
+    }
+    catch (std::exception &ex) {
+        std::cout << ex.what() << std::endl;
+    }
     return 0;
 }

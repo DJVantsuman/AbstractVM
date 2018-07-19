@@ -10,7 +10,7 @@ class Int16 : public IOperand
 private:
     std::string         _value;
     eOperandType const  _type = eOperandType::INT8;
-    int                 _precision = 1;
+    int                 _precision = 2;
 
     Int16();
     Int16(Int16 const &src);
@@ -23,8 +23,7 @@ public:
 
     virtual int             getPrecision( void ) const override;
     virtual eOperandType    getType( void ) const override;
-    std::string             getValue() const;
-//        void                    setValue(std::string value);
+    std::string             getValue() const override;
 
     virtual IOperand const  *operator+( IOperand const & rhs ) const override;
     virtual IOperand const  *operator-( IOperand const & rhs ) const override;

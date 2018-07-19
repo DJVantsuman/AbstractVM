@@ -23,8 +23,7 @@ class Int8 : public IOperand
 
         virtual int             getPrecision( void ) const override;
         virtual eOperandType    getType( void ) const override;
-        std::string             getValue() const;
-//        void                    setValue(std::string value);
+        std::string             getValue() const override;
 
         virtual IOperand const  *operator+( IOperand const & rhs ) const override;
         virtual IOperand const  *operator-( IOperand const & rhs ) const override;
