@@ -7,11 +7,11 @@ bool checkType(std::string type, std::string value)
 {
     std::cmatch result;
     if (type == "int8" || type == "int16" || type == "int32") {
-         std::regex regular("[0-9]+");
+         std::regex regular("-?[0-9]+");
          return std::regex_match(value.c_str(), result, regular);
     }
     else if (type == "float" || type == "double") {
-        std::regex regular("(\\d+|[0-9]*\\.[0-9]+)");
+        std::regex regular("(-?\\d+|[0-9]*\\.[0-9]+)");
         return std::regex_match(value.c_str(), result, regular);
     }
     std::cout << type << ": " << value << std::endl;
@@ -30,7 +30,7 @@ void validate(std::string str, VirtualMachine &vm)
                                "( )+"
                                "(int8|int16|int32|float|double)"
                                "(\\()"
-                               "(\\d+|[0-9]*\\.[0-9]+)"
+                               "(-?\\d+|[0-9]*\\.[0-9]+)"
                                "((\\))|(\\) *;.*))");
             if (std::regex_match(str.c_str(), result, regular))
                 if (checkType(result[3], result[5]))
@@ -50,10 +50,10 @@ void readFile(VirtualMachine &vm)
 void readStdin(VirtualMachine &vm)
 {
     std::string var = "";
-    while (var != "end")
+    while (var != "exit")
     {
         std::getline(std::cin, var);
-        std::cout << var << std::endl;
+        validate(var,vm);
     }
 }
 

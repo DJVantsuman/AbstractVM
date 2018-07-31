@@ -91,10 +91,10 @@ int VirtualMachine::assert(const IOperand *operand) {
 void VirtualMachine::add() {
     if(stack.size() > 1) {
         const  IOperand *newOperand;
-        if (stack[0]->getPrecision() > stack[1]->getPrecision())
-            newOperand = stack[0]->operator+(*stack[1]);
-        else
-            newOperand = stack[1]->operator+(*stack[0]);
+        if (stack[0]->getPrecision() >= stack[1]->getPrecision())
+            newOperand = *stack[0] + *stack[1];
+//        else
+//            newOperand = stack[1]->operator+(*stack[0]);
         pop();
         pop();
         push(newOperand);
