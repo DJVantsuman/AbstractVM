@@ -90,11 +90,9 @@ int VirtualMachine::assert(const IOperand *operand) {
 
 void VirtualMachine::add() {
     if(stack.size() > 1) {
-        const  IOperand *newOperand;
-        if (stack[0]->getPrecision() >= stack[1]->getPrecision())
-            newOperand = *stack[0] + *stack[1];
-//        else
-//            newOperand = stack[1]->operator+(*stack[0]);
+        const  IOperand *newOperand = *stack[0] + *stack[1];
+        delete(stack[0]);
+        delete(stack[1]);
         pop();
         pop();
         push(newOperand);
@@ -105,11 +103,9 @@ void VirtualMachine::add() {
 
 void VirtualMachine::sub() {
     if(stack.size() > 1) {
-        const  IOperand *newOperand;
-        if (stack[0]->getPrecision() > stack[1]->getPrecision())
-            newOperand = stack[0]->operator-(*stack[1]);
-        else
-            newOperand = stack[1]->operator-(*stack[0]);
+        const  IOperand *newOperand = *stack[0] - *stack[1];
+        delete(stack[0]);
+        delete(stack[1]);
         pop();
         pop();
         push(newOperand);
@@ -120,11 +116,9 @@ void VirtualMachine::sub() {
 
 void VirtualMachine::mul() {
     if(stack.size() > 1) {
-        const  IOperand *newOperand;
-        if (stack[0]->getPrecision() > stack[1]->getPrecision())
-            newOperand = stack[0]->operator*(*stack[1]);
-        else
-            newOperand = stack[1]->operator*(*stack[0]);
+        const  IOperand *newOperand = *stack[0] * *stack[1];
+        delete(stack[0]);
+        delete(stack[1]);
         pop();
         pop();
         push(newOperand);
@@ -134,37 +128,29 @@ void VirtualMachine::mul() {
 }
 
 void VirtualMachine::div() {
-    if(stack.size() < 2)
-        throw (VMException("EXCEPTION: The stack is composed of strictly "
-                                   "less that two values when an arithmetic "
-                                   "instruction is executed."));
-    else {
-        const  IOperand *newOperand;
-        if (stack[0]->getPrecision() > stack[1]->getPrecision())
-            newOperand = stack[0]->operator/(*stack[1]);
-        else
-            newOperand = stack[1]->operator/(*stack[0]);
+    if(stack.size() > 1) {
+        const  IOperand *newOperand = *stack[0] / *stack[1];
+        delete(stack[0]);
+        delete(stack[1]);
         pop();
         pop();
         push(newOperand);
-    }
+    } else throw (VMException("EXCEPTION: The stack is composed of strictly "
+                                      "less that two values when an arithmetic "
+                                      "instruction is executed."));
 }
 
 void VirtualMachine::mod() {
-    if(stack.size() < 2)
-        throw (VMException("EXCEPTION: The stack is composed of strictly "
-                                   "less that two values when an arithmetic "
-                                   "instruction is executed."));
-    else {
-        const  IOperand *newOperand;
-        if (stack[0]->getPrecision() > stack[1]->getPrecision())
-            newOperand = stack[0]->operator%(*stack[1]);
-        else
-            newOperand = stack[1]->operator%(*stack[0]);
+    if(stack.size() > 1) {
+        const  IOperand *newOperand = *stack[0] % *stack[1];
+        delete(stack[0]);
+        delete(stack[1]);
         pop();
         pop();
         push(newOperand);
-    }
+    } else throw (VMException("EXCEPTION: The stack is composed of strictly "
+                                      "less that two values when an arithmetic "
+                                      "instruction is executed."));
 }
 
 void VirtualMachine::print() {

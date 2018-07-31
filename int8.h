@@ -15,6 +15,7 @@
 
 #include "ioperand.h"
 #include "eoperandtype.h"
+#include "factory.h"
 #include "VMException.h"
 #include <string>
 

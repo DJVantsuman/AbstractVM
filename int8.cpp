@@ -33,19 +33,22 @@ Int8    &Int8::operator=( Int8 const &rhs )
 IOperand const * Int8::operator+( IOperand const &rhs ) const
 {
     int result = std::stoi(this->_value) + std::stoi(rhs.getValue());
-    return new Int8(std::to_string(result));
+    eOperandType type = std::max(this->getType(), rhs.getType());
+    return Factory::instance().createOperand(type, std::to_string(result));
 }
 
 IOperand const * Int8::operator-( IOperand const &rhs ) const
 {
     int result = std::stoi(this->_value) - std::stoi(rhs.getValue());
-    return new Int8(std::to_string(result));
+    eOperandType type = std::max(this->getType(), rhs.getType());
+    return Factory::instance().createOperand(type, std::to_string(result));
 }
 
 IOperand const * Int8::operator*( IOperand const &rhs ) const
 {
     int result = std::stoi(this->_value) * std::stoi(rhs.getValue());
-    return new Int8(std::to_string(result));
+    eOperandType type = std::max(this->getType(), rhs.getType());
+    return Factory::instance().createOperand(type, std::to_string(result));
 }
 
 IOperand const * Int8::operator/( IOperand const &rhs ) const
@@ -53,7 +56,8 @@ IOperand const * Int8::operator/( IOperand const &rhs ) const
     if (std::stoi(rhs.getValue()) == 0)
         throw (VMException("EXCEPTION: Division by 0."));
     int result = std::stoi(this->_value) / std::stoi(rhs.getValue());
-    return new Int8(std::to_string(result));
+    eOperandType type = std::max(this->getType(), rhs.getType());
+    return Factory::instance().createOperand(type, std::to_string(result));
 }
 
 IOperand const * Int8::operator%( IOperand const &rhs ) const
@@ -61,7 +65,8 @@ IOperand const * Int8::operator%( IOperand const &rhs ) const
     if (std::stoi(rhs.getValue()) == 0)
         throw (VMException("EXCEPTION: Modulo by 0."));
     int result = std::stoi(this->_value) % std::stoi(rhs.getValue());
-    return new Int8(std::to_string(result));
+    eOperandType type = std::max(this->getType(), rhs.getType());
+    return Factory::instance().createOperand(type, std::to_string(result));
 }
 
 std::string const & Int8::toString( void ) const
