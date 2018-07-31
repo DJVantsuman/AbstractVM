@@ -1,8 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   int8.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: itsuman <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/07/20 23:25:43 by itsuman           #+#    #+#             */
+/*   Updated: 2018/07/20 23:25:46 by itsuman          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef INT8_H
 #define INT8_H
 
 #include "ioperand.h"
 #include "eoperandtype.h"
+#include "VMException.h"
 #include <string>
 
 class Int8 : public IOperand

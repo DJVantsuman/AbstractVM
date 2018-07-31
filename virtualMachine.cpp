@@ -14,7 +14,12 @@
 
 VirtualMachine::VirtualMachine(){ }
 VirtualMachine::VirtualMachine(VirtualMachine const &src) { *this = src; }
-VirtualMachine::~VirtualMachine(){ }
+
+VirtualMachine::~VirtualMachine(){
+    for (auto it = stack.begin(); it != stack.end(); it++)
+        delete(*it);
+}
+
 VirtualMachine    &VirtualMachine::operator=( VirtualMachine const &rhs )
 {
     return *this;
@@ -54,27 +59,33 @@ const IOperand *VirtualMachine::getOperand(std::string type, std::string value) 
     return nullptr;
 }
 
-void VirtualMachine::mathIt(eOperandType type, std::string number) {
-
-}
-
 void VirtualMachine::push(const IOperand *operand) {
     stack.push_front(operand);
     size++;
 }
 
 void VirtualMachine::pop() {
-    stack.pop_front();
-    size--;
+    if (stack.size() > 0) {
+        stack.pop_front();
+        size--;
+    } else throw (VMException("EXCEPTION: Pop on an empty stack."));
 }
 
 void VirtualMachine::dump() {
-    for (auto it = stack.begin(); it != stack.end(); it++)
-        std::cout << (*it)->toString() << std::endl;
+    if (stack.size() > 0)
+        for (auto it = stack.begin(); it != stack.end(); it++)
+            std::cout << (*it)->toString() << std::endl;
+    else std::cout << "Empty stack." << std::endl;
 }
 
-void VirtualMachine::assert(const IOperand *operand) {
-
+int VirtualMachine::assert(const IOperand *operand) {
+    if (stack.size() > 0)
+        if (stack[0]->getType() != operand->getType() ||
+                stack[0]->getValue() != operand->getValue())
+            throw (VMException("EXCEPTION: An assert instruction is not true."));
+        else
+            return 1;
+    else throw (VMException("EXCEPTION: Assert on an empty stack."));
 }
 
 void VirtualMachine::add() {
@@ -123,9 +134,11 @@ void VirtualMachine::mul() {
 }
 
 void VirtualMachine::div() {
-    if (stack[1]->getValue() == "0" || stack[1]->getValue() == "0.0")
-        throw (VMException("EXCEPTION: Division by 0."));
-    else if(stack.size() > 1) {
+    if(stack.size() < 2)
+        throw (VMException("EXCEPTION: The stack is composed of strictly "
+                                   "less that two values when an arithmetic "
+                                   "instruction is executed."));
+    else {
         const  IOperand *newOperand;
         if (stack[0]->getPrecision() > stack[1]->getPrecision())
             newOperand = stack[0]->operator/(*stack[1]);
@@ -134,15 +147,30 @@ void VirtualMachine::div() {
         pop();
         pop();
         push(newOperand);
-    } else throw (VMException("EXCEPTION: The stack is composed of strictly "
-                                      "less that two values when an arithmetic "
-                                      "instruction is executed."));
+    }
 }
 
 void VirtualMachine::mod() {
-
+    if(stack.size() < 2)
+        throw (VMException("EXCEPTION: The stack is composed of strictly "
+                                   "less that two values when an arithmetic "
+                                   "instruction is executed."));
+    else {
+        const  IOperand *newOperand;
+        if (stack[0]->getPrecision() > stack[1]->getPrecision())
+            newOperand = stack[0]->operator%(*stack[1]);
+        else
+            newOperand = stack[1]->operator%(*stack[0]);
+        pop();
+        pop();
+        push(newOperand);
+    }
 }
 
 void VirtualMachine::print() {
-
+    if (stack.size() < 1)
+        throw (VMException("EXCEPTION: Print on an empty stack."));
+    else if (stack[0]->getType() == eOperandType::INT8)
+        std::cout << static_cast<char>(std::stoi(stack[0]->getValue())) << std::endl;
+    else throw (VMException("EXCEPTION: An print instruction is not true"));
 }

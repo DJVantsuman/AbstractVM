@@ -37,13 +37,12 @@ private:
 public:
     static VirtualMachine  &instance();
     void executeComand(std::string command, std::string type = "", std::string value = "");
-    void mathIt(eOperandType type, std::string number);
 
 private:
     void push(const IOperand *operand);
     void pop();
     void dump();
-    void assert(const IOperand *operand);
+    int  assert(const IOperand *operand);
     void add();
     void sub();
     void mul();

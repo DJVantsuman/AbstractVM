@@ -18,7 +18,7 @@ bool checkType(std::string type, std::string value)
     return false;
 }
 
-bool validate(std::string str, VirtualMachine &vm)
+void validate(std::string str, VirtualMachine &vm)
 {
     std::cmatch result;
     std::regex command("(;|push|pop|dump|assert|add|sub|mul|div|mod|print|exit)"
@@ -33,38 +33,28 @@ bool validate(std::string str, VirtualMachine &vm)
                                "(\\d+|[0-9]*\\.[0-9]+)"
                                "((\\))|(\\) *;.*))");
             if (std::regex_match(str.c_str(), result, regular))
-                if (checkType(result[3], result[5])) {
+                if (checkType(result[3], result[5]))
                     vm.executeComand(comand, result[3], result[5]);
-                    return true;
-                } else {
-                    return false;
-                }
+                else throw (VMException("EXCEPTION: An instruction is unknown."));
         }
-        else if (comand != "exit") {
+        else if (comand != "exit")
             vm.executeComand(comand);
-            return true;
-        }
-        else
-            exit(1);
-    }
-    return false;
+        else exit(1);
+    } else throw (VMException("EXCEPTION: An instruction is unknown."));
 }
 
-int readFile(VirtualMachine &vm)
+void readFile(VirtualMachine &vm)
 {
-    return 1;
 }
 
-int readStdin(VirtualMachine &vm)
+void readStdin(VirtualMachine &vm)
 {
     std::string var = "";
     while (var != "end")
     {
         std::getline(std::cin, var);
         std::cout << var << std::endl;
-        std::cout << validate(var, vm) << std::endl;
     }
-    return 1;
 }
 
 int main(int argc, char *argv[])
