@@ -13,8 +13,15 @@
 #ifndef FACTORY_H
 #define FACTORY_H
 
+#include <iostream>
 #include "ioperand.h"
 #include "eoperandtype.h"
+#include "VMException.h"
+#include "int8.h"
+#include "Int16.h"
+#include "Int32.h"
+#include "Float.h"
+#include "Double.h"
 
 class Factory
 {

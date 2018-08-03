@@ -1,5 +1,10 @@
-#ifndef INT16_H
-#define INT16_H
+//
+// Created by Ivan Tsuman on 8/3/18.
+//
+
+#ifndef FLOAT_H
+#define FLOAT_H
+
 
 #include "ioperand.h"
 #include "eoperandtype.h"
@@ -7,21 +12,21 @@
 #include "VMException.h"
 #include <string>
 
-class Int16 : public IOperand
+class Float : public IOperand
 {
 private:
     std::string         _value;
-    eOperandType const  _type = eOperandType::INT8;
-    int                 _precision = 2;
+    eOperandType const  _type = eOperandType::FLOAT;
+    int                 _precision = 4;
 
-    Int16();
-    Int16(Int16 const &src);
+    Float();
+    Float(Float const &src);
 
 public:
-    Int16(std::string value);
-    ~Int16();
+    Float(std::string value);
+    ~Float();
 
-    Int16            &operator=(Int16 const &rhs);
+    Float            &operator=(Float const &rhs);
 
     virtual int             getPrecision( void ) const override;
     virtual eOperandType    getType( void ) const override;
@@ -36,4 +41,5 @@ public:
     virtual std::string const &toString( void ) const override;
 };
 
-#endif // INT16_H
+
+#endif //FLOAT_H

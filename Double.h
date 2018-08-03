@@ -1,5 +1,9 @@
-#ifndef INT16_H
-#define INT16_H
+//
+// Created by Ivan Tsuman on 8/3/18.
+//
+
+#ifndef DOUBLE_H
+#define DOUBLE_H
 
 #include "ioperand.h"
 #include "eoperandtype.h"
@@ -7,21 +11,21 @@
 #include "VMException.h"
 #include <string>
 
-class Int16 : public IOperand
+class Double : public IOperand
 {
 private:
     std::string         _value;
-    eOperandType const  _type = eOperandType::INT8;
-    int                 _precision = 2;
+    eOperandType const  _type = eOperandType::DOUBLE;
+    int                 _precision = 5;
 
-    Int16();
-    Int16(Int16 const &src);
+    Double();
+    Double(Double const &src);
 
 public:
-    Int16(std::string value);
-    ~Int16();
+    Double(std::string value);
+    ~Double();
 
-    Int16            &operator=(Int16 const &rhs);
+    Double            &operator=(Double const &rhs);
 
     virtual int             getPrecision( void ) const override;
     virtual eOperandType    getType( void ) const override;
@@ -36,4 +40,5 @@ public:
     virtual std::string const &toString( void ) const override;
 };
 
-#endif // INT16_H
+
+#endif //DOUBLE_H

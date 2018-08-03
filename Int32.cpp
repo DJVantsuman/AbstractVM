@@ -1,45 +1,49 @@
+//
+// Created by Ivan Tsuman on 8/3/18.
+//
+
 #include <iostream>
-#include "Int16.h"
+#include "Int32.h"
 
-Int16::Int16(){ }
-Int16::Int16(Int16 const &src) { *this = src; }
-Int16::Int16(std::string value) { _value = value; }
+Int32::Int32(){ }
+Int32::Int32(Int32 const &src) { *this = src; }
+Int32::Int32(std::string value) { _value = value; }
 
-Int16::~Int16(){ }
+Int32::~Int32(){ }
 
-int             Int16::getPrecision( void ) const { return _precision; }
-eOperandType    Int16::getType( void ) const { return this->_type; }
-std::string     Int16::getValue() const      { return _value; }
+int             Int32::getPrecision( void ) const { return _precision; }
+eOperandType    Int32::getType( void ) const { return this->_type; }
+std::string     Int32::getValue() const      { return _value; }
 
-Int16    &Int16::operator=( Int16 const &rhs )
+Int32    &Int32::operator=( Int32 const &rhs )
 {
     if (this != &rhs)
         _value = rhs.getValue();
     return *this;
 }
 
-IOperand const * Int16::operator+( IOperand const &rhs ) const
+IOperand const * Int32::operator+( IOperand const &rhs ) const
 {
     int result = std::stoi(this->_value) + std::stoi(rhs.getValue());
     eOperandType type = std::max(this->getType(), rhs.getType());
     return Factory::instance().createOperand(type, std::to_string(result));
 }
 
-IOperand const * Int16::operator-( IOperand const &rhs ) const
+IOperand const * Int32::operator-( IOperand const &rhs ) const
 {
     int result = std::stoi(this->_value) - std::stoi(rhs.getValue());
     eOperandType type = std::max(this->getType(), rhs.getType());
     return Factory::instance().createOperand(type, std::to_string(result));
 }
 
-IOperand const * Int16::operator*( IOperand const &rhs ) const
+IOperand const * Int32::operator*( IOperand const &rhs ) const
 {
     int result = std::stoi(this->_value) * std::stoi(rhs.getValue());
     eOperandType type = std::max(this->getType(), rhs.getType());
     return Factory::instance().createOperand(type, std::to_string(result));
 }
 
-IOperand const * Int16::operator/( IOperand const &rhs ) const
+IOperand const * Int32::operator/( IOperand const &rhs ) const
 {
     if (std::stoi(rhs.getValue()) == 0)
         throw (VMException("EXCEPTION: Division by 0."));
@@ -48,7 +52,7 @@ IOperand const * Int16::operator/( IOperand const &rhs ) const
     return Factory::instance().createOperand(type, std::to_string(result));
 }
 
-IOperand const * Int16::operator%( IOperand const &rhs ) const
+IOperand const * Int32::operator%( IOperand const &rhs ) const
 {
     if (std::stoi(rhs.getValue()) == 0)
         throw (VMException("EXCEPTION: Modulo by 0."));
@@ -57,7 +61,7 @@ IOperand const * Int16::operator%( IOperand const &rhs ) const
     return Factory::instance().createOperand(type, std::to_string(result));
 }
 
-std::string const & Int16::toString( void ) const
+std::string const & Int32::toString( void ) const
 {
     return _value;
 }
