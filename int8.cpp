@@ -32,9 +32,13 @@ Int8    &Int8::operator=( Int8 const &rhs )
 
 IOperand const * Int8::operator+( IOperand const &rhs ) const
 {
-    int result = std::stoi(this->_value) + std::stoi(rhs.getValue());
     eOperandType type = std::max(this->getType(), rhs.getType());
-    return Factory::instance().createOperand(type, std::to_string(result));
+    if (type < eOperandType::FLOAT)
+        return Factory::instance().createOperand(type,
+                                                 std::to_string(std::stoi(this->_value) + std::stoi(rhs.getValue())));
+    else
+        return Factory::instance().createOperand(type,
+                                                 std::to_string(std::stold(this->_value) + std::stold(rhs.getValue())));
 }
 
 IOperand const * Int8::operator-( IOperand const &rhs ) const

@@ -23,14 +23,14 @@ Float    &Float::operator=( Float const &rhs )
 
 IOperand const * Float::operator+( IOperand const &rhs ) const
 {
-    int result = std::stoi(this->_value) + std::stoi(rhs.getValue());
+    int result = std::stold(this->_value) + std::stold(rhs.getValue());
     eOperandType type = std::max(this->getType(), rhs.getType());
     return Factory::instance().createOperand(type, std::to_string(result));
 }
 
 IOperand const * Float::operator-( IOperand const &rhs ) const
 {
-    int result = std::stoi(this->_value) - std::stoi(rhs.getValue());
+    int result = std::stold(this->_value) - std::stold(rhs.getValue());
     eOperandType type = std::max(this->getType(), rhs.getType());
     return Factory::instance().createOperand(type, std::to_string(result));
 }
