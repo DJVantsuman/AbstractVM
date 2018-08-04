@@ -46,6 +46,7 @@ void validate(std::string str, VirtualMachine &vm)
 
 void readFile(VirtualMachine &vm, std::string file)
 {
+    bool f = false;
     std::string buff;
     std::vector<std::string> commands;
     std::ifstream fin(file);
@@ -57,12 +58,29 @@ void readFile(VirtualMachine &vm, std::string file)
         {
             if(std::regex_match(buff.c_str(), result, regular))
             {
-                for (int i = 0; i < commands.size(); i++)
-                    validate(commands[i], vm);
+                f = true;
+                break;
             }
             commands.push_back(buff);
         }
+        if (f)
+        {
+            for (int i = 0; i < commands.size(); i++)
+            {
+                try {
+                    validate(commands[i], vm);
+                }
+                catch (std::exception &ex){
+                    std::string massage = ex.what();
+                    throw (VMException(massage + "\n" + "Line " + std::to_string(i) + ": " + commands[i]));
+                }
+            }
+        }
+        else
+            throw VMException("EXCEPTION: The program doesn’t have an exit instruction.");
     }
+    else
+        throw VMException("EXCEPTION: Can not open file \"" + file + "\" or it does not exist.");
 }
 
 void readStdin(VirtualMachine &vm)
