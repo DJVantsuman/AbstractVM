@@ -15,7 +15,6 @@ bool checkType(std::string type, std::string value)
         std::regex regular("(-?\\d+|[0-9]*\\.[0-9]+)");
         return std::regex_match(value.c_str(), result, regular);
     }
-    std::cout << type << ": " << value << std::endl;
     return false;
 }
 
@@ -26,6 +25,7 @@ void validate(std::string str, VirtualMachine &vm)
                        "([\\w\\W]*)");
     if (std::regex_match(str.c_str(), result, command)) {
         std::string comand = result[1];
+        std::string type = result[2];
         if (comand == "push" || comand == "assert") {
             std::regex regular("(push|assert)"
                                "( )+"
@@ -36,11 +36,11 @@ void validate(std::string str, VirtualMachine &vm)
             if (std::regex_match(str.c_str(), result, regular)) {
                 if (checkType(result[3], result[5])) {
                     vm.executeComand(comand, result[3], result[5]);
-                } else throw (VMException("EXCEPTION: An instruction is unknown."));
-            }
+                } else throw VMException("EXCEPTION: Wrong type of the passed parameter: " + static_cast<std::string>(result[5]));
+            } else throw VMException("EXCEPTION: Wrong type of argument: " + type);
         }
         else vm.executeComand(comand);
-    } else throw (VMException("EXCEPTION: An instruction is unknown."));
+    } else throw VMException("EXCEPTION: An instruction is unknown: " + str);
 }
 
 void readFile(VirtualMachine &vm, std::string file)
@@ -51,35 +51,30 @@ void readFile(VirtualMachine &vm, std::string file)
     std::ifstream fin(file);
     std::cmatch result;
     std::regex regular("(exit\\s?(;.*)?)");
-    if(fin.is_open() && fin.good())
-    {
+    if(fin.is_open() && fin.good()) {
         while (getline(fin, buff))
         {
-            if(std::regex_match(buff.c_str(), result, regular))
-            {
+            if(std::regex_match(buff.c_str(), result, regular)) {
                 f = true;
                 break;
             }
             commands.push_back(buff);
         }
-        if (f)
-        {
+        if(f) {
             for (int i = 0; i < static_cast<int>(commands.size()); i++)
             {
                 try {
                     validate(commands[i], vm);
                 }
-                catch (std::exception &ex){
+                catch (std::exception &ex) {
                     std::string massage = ex.what();
                     throw (VMException(massage + "\n" + "Line " + std::to_string(i) + ": " + commands[i]));
                 }
             }
         }
-        else
-            throw VMException("EXCEPTION: The program doesn’t have an exit instruction.");
+        else throw VMException("EXCEPTION: The program has wrong instructions or exit instruction is absent.");
     }
-    else
-        throw VMException("EXCEPTION: Can not open file \"" + file + "\" or it does not exist.");
+    else throw VMException("EXCEPTION: Can not open file \"" + file + "\" or it does not exist.");
 }
 
 void readStdin(VirtualMachine &vm)
@@ -124,19 +119,17 @@ void printMan()
 
 int main(int argc, char *argv[])
 {
-    std::cout << "The virtual machine welcomes you." << std::endl;
-    static VirtualMachine& vm = VirtualMachine::instance();
     try {
         if (argc == 2)
         {
             std::string arg = argv[1];
-            if (arg == "man")
+            if (arg == "--help")
                 printMan();
             else
-                readFile(vm, argv[1]);
+                readFile(VirtualMachine::instance(), argv[1]);
         }
         else if (argc == 1)
-            readStdin(vm);
+            readStdin(VirtualMachine::instance());
     }
     catch (std::exception &ex) {
         std::cout << ex.what() << std::endl;

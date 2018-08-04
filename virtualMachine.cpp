@@ -94,7 +94,7 @@ void VirtualMachine::add() {
 
 void VirtualMachine::sub() {
     if(stack.size() > 1) {
-        const  IOperand *newOperand = *stack[0] - *stack[1];
+        const  IOperand *newOperand = *stack[1] - *stack[0];
         delete(stack[0]);
         delete(stack[1]);
         pop();
@@ -116,7 +116,7 @@ void VirtualMachine::mul() {
 
 void VirtualMachine::div() {
     if(stack.size() > 1) {
-        const  IOperand *newOperand = *stack[0] / *stack[1];
+        const  IOperand *newOperand = *stack[1] / *stack[0];
         delete(stack[0]);
         delete(stack[1]);
         pop();
@@ -127,7 +127,7 @@ void VirtualMachine::div() {
 
 void VirtualMachine::mod() {
     if(stack.size() > 1) {
-        const  IOperand *newOperand = *stack[0] % *stack[1];
+        const  IOperand *newOperand = *stack[1] % *stack[0];
         delete(stack[0]);
         delete(stack[1]);
         pop();
