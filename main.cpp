@@ -47,13 +47,20 @@ void validate(std::string str, VirtualMachine &vm)
 void readFile(VirtualMachine &vm, std::string file)
 {
     std::string buff;
-    std::vector commands;
+    std::vector<std::string> commands;
     std::ifstream fin(file);
+    std::cmatch result;
+    std::regex regular("(exit\\s?(;.*)?)");
     if(fin.is_open() && fin.good())
     {
         while (getline(fin, buff))
         {
-            
+            if(std::regex_match(buff.c_str(), result, regular))
+            {
+                for (int i = 0; i < commands.size(); i++)
+                    validate(commands[i], vm);
+            }
+            commands.push_back(buff);
         }
     }
 }
@@ -61,9 +68,11 @@ void readFile(VirtualMachine &vm, std::string file)
 void readStdin(VirtualMachine &vm)
 {
     std::string var = "";
+    std::cmatch result;
+    std::regex regular("(;;\\s?(;.*)?)");
     while (std::getline(std::cin, var))
     {
-        if (var == ";;")
+        if (std::regex_match(var.c_str(), result, regular))
             exit(0);
         validate(var,vm);
     }
