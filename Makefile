@@ -11,8 +11,9 @@
 # **************************************************************************** #
 
 NAME =	abstractVM.exe
-FLAGS = -Wall -Werror -Wextra
-SRC = main.cpp
+FLAGS = -Wall -Werror -Wextra -std=c++11
+SRC = main.cpp Double.cpp factory.cpp Float.cpp int8.cpp Int16.cpp Int32.cpp \
+      virtualMachine.cpp VMException.cpp
 CC = clang++
 OSRC =	$(SRC:.cpp=.o)
 

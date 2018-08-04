@@ -13,16 +13,9 @@
 #include "virtualMachine.h"
 
 VirtualMachine::VirtualMachine(){ }
-VirtualMachine::VirtualMachine(VirtualMachine const &src) { *this = src; }
-
 VirtualMachine::~VirtualMachine(){
     for (auto it = stack.begin(); it != stack.end(); it++)
         delete(*it);
-}
-
-VirtualMachine    &VirtualMachine::operator=( VirtualMachine const &rhs )
-{
-    return *this;
 }
 
 VirtualMachine &VirtualMachine::instance()
@@ -96,9 +89,7 @@ void VirtualMachine::add() {
         pop();
         pop();
         push(newOperand);
-    } else throw (VMException("EXCEPTION: The stack is composed of strictly "
-                              "less that two values when an arithmetic "
-                              "instruction is executed."));
+    } else throw (VMException("EXCEPTION: The stack is composed of less that two values."));
 }
 
 void VirtualMachine::sub() {
@@ -109,9 +100,7 @@ void VirtualMachine::sub() {
         pop();
         pop();
         push(newOperand);
-    } else throw (VMException("EXCEPTION: The stack is composed of strictly "
-                                      "less that two values when an arithmetic "
-                                      "instruction is executed."));
+    } else throw (VMException("EXCEPTION: The stack is composed of less that two values."));
 }
 
 void VirtualMachine::mul() {
@@ -122,9 +111,7 @@ void VirtualMachine::mul() {
         pop();
         pop();
         push(newOperand);
-    } else throw (VMException("EXCEPTION: The stack is composed of strictly "
-                                      "less that two values when an arithmetic "
-                                      "instruction is executed."));
+    } else throw (VMException("EXCEPTION: The stack is composed of less that two values."));
 }
 
 void VirtualMachine::div() {
@@ -135,9 +122,7 @@ void VirtualMachine::div() {
         pop();
         pop();
         push(newOperand);
-    } else throw (VMException("EXCEPTION: The stack is composed of strictly "
-                                      "less that two values when an arithmetic "
-                                      "instruction is executed."));
+    } else throw (VMException("EXCEPTION: The stack is composed of less that two values."));
 }
 
 void VirtualMachine::mod() {
@@ -148,9 +133,7 @@ void VirtualMachine::mod() {
         pop();
         pop();
         push(newOperand);
-    } else throw (VMException("EXCEPTION: The stack is composed of strictly "
-                                      "less that two values when an arithmetic "
-                                      "instruction is executed."));
+    } else throw (VMException("EXCEPTION: The stack is composed of less that two values."));
 }
 
 void VirtualMachine::print() {

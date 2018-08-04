@@ -33,14 +33,13 @@ void validate(std::string str, VirtualMachine &vm)
                                "(\\()"
                                "(-?\\d+|[0-9]*\\.[0-9]+)"
                                "((\\))|(\\) *;.*))");
-            if (std::regex_match(str.c_str(), result, regular))
-                if (checkType(result[3], result[5]))
+            if (std::regex_match(str.c_str(), result, regular)) {
+                if (checkType(result[3], result[5])) {
                     vm.executeComand(comand, result[3], result[5]);
-                else throw (VMException("EXCEPTION: An instruction is unknown."));
+                } else throw (VMException("EXCEPTION: An instruction is unknown."));
+            }
         }
-        else if (comand != "exit")
-            vm.executeComand(comand);
-        else exit(1);
+        else vm.executeComand(comand);
     } else throw (VMException("EXCEPTION: An instruction is unknown."));
 }
 
@@ -65,7 +64,7 @@ void readFile(VirtualMachine &vm, std::string file)
         }
         if (f)
         {
-            for (int i = 0; i < commands.size(); i++)
+            for (int i = 0; i < static_cast<int>(commands.size()); i++)
             {
                 try {
                     validate(commands[i], vm);
@@ -96,13 +95,46 @@ void readStdin(VirtualMachine &vm)
     }
 }
 
+void printMan()
+{
+    std::cout << "\n>>>>>>>>>>>>>>>>>>>>> -- AVM Man -- <<<<<<<<<<<<<<<<<<<<<\n" << std::endl;
+
+    std::cout << "push v:   Pushes the value v at the top of the stack." << std::endl;
+    std::cout << "pop:      Unstacks the value from the top of the stack." << std::endl;
+    std::cout << "dump:     Displays each value of the stack." << std::endl;
+    std::cout << "assert v: Asserts that the value at the top of the stack\n"
+                 "          is equal to the one passed." << std::endl;
+    std::cout << "add:      Unstacks the first two values on the stack, adds\n"
+                 "          them together and stacks the result." << std::endl;
+    std::cout << "sub:      Unstacks the first two values on the stack,\n"
+                 "          subtracts them, then stacks the result." << std::endl;
+    std::cout << "mul:      Unstacks the first two values on the stack,\n"
+                 "          multiplies them, then stacks the result." << std::endl;
+    std::cout << "div:      Unstacks the first two values on the stack,\n"
+                 "          divides them, then stacks the result." << std::endl;
+    std::cout << "mod:      Unstacks the first two values on the stack,\n"
+                 "          calculates the modulus, then stacks the result." << std::endl;
+    std::cout << "print:    Displays the corresponding character on the\n"
+                 "          standard output." << std::endl;
+    std::cout << "exit:     Terminate the execution of the current program." << std::endl;
+
+    std::cout << "\n\";\":      Beginning of a comment." << std::endl;
+    std::cout << "\";;\":     End of a program read from the standard input" << std::endl;
+}
+
 int main(int argc, char *argv[])
 {
     std::cout << "The virtual machine welcomes you." << std::endl;
     static VirtualMachine& vm = VirtualMachine::instance();
     try {
         if (argc == 2)
-            readFile(vm, argv[1]);
+        {
+            std::string arg = argv[1];
+            if (arg == "man")
+                printMan();
+            else
+                readFile(vm, argv[1]);
+        }
         else if (argc == 1)
             readStdin(vm);
     }

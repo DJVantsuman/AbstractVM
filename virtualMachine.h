@@ -25,9 +25,7 @@
 class VirtualMachine {
 private:
     VirtualMachine();
-    VirtualMachine(VirtualMachine const &src);
     ~VirtualMachine();
-    VirtualMachine &operator=(VirtualMachine const &rhs);
 
     std::deque<const IOperand*> stack;
     int size;
