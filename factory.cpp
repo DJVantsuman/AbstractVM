@@ -38,7 +38,7 @@ IOperand const  *Factory::createOperand(eOperandType type, const std::string &va
 IOperand const  *Factory::createInt8(const std::string &value) const
 {
     int n = std::stoi(value);
-    if ((value[0] != '-' && value.size() > 3) || n > 127)
+    if ((value[0] != '-' && value.size() > 3) || n > 255)
         throw (VMException("EXCEPTION: Overflow on a value."));
     else if ((value[0] == '-' && value.size() > 4) || n < -128)
         throw (VMException("EXCEPTION: Underflow on a value."));
@@ -48,7 +48,7 @@ IOperand const  *Factory::createInt8(const std::string &value) const
 IOperand const  *Factory::createInt16(const std::string &value) const
 {
     int n = std::stoi(value);
-    if ((value[0] != '-' && value.size() > 5) || n > 32767)
+    if ((value[0] != '-' && value.size() > 5) || n > 65535)
         throw (VMException("EXCEPTION: Overflow on a value."));
     else if ((value[0] == '-' && value.size() > 6) || n < -32768)
         throw (VMException("EXCEPTION: Underflow on a value."));
@@ -72,8 +72,9 @@ IOperand const  *Factory::createInt32(const std::string &value) const
 
 IOperand const  *Factory::createFloat(std::string const &value) const
 {
+    float result;
     try {
-        std::stof(value);
+        result = std::stof(value);
     }
     catch (...)
     {
@@ -82,13 +83,14 @@ IOperand const  *Factory::createFloat(std::string const &value) const
         else
             throw (VMException("EXCEPTION: Underflow on a value."));
     }
-    return new Float(value);
+    return new Float(std::to_string(result));
 }
 
 IOperand const  *Factory::createDouble(std::string const &value) const
 {
+    double result;
     try {
-        std::stod(value);
+        result = std::stod(value);
     }
     catch (...)
     {
@@ -97,5 +99,5 @@ IOperand const  *Factory::createDouble(std::string const &value) const
         else
             throw (VMException("EXCEPTION: Underflow on a value."));
     }
-    return new Double(value);
+    return new Double(std::to_string(result));
 }

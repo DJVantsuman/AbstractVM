@@ -23,21 +23,21 @@ Float    &Float::operator=( Float const &rhs )
 
 IOperand const * Float::operator+( IOperand const &rhs ) const
 {
-    int result = std::stold(this->_value) + std::stold(rhs.getValue());
+    auto result = std::stold(this->_value) + std::stold(rhs.getValue());
     eOperandType type = std::max(this->getType(), rhs.getType());
     return Factory::instance().createOperand(type, std::to_string(result));
 }
 
 IOperand const * Float::operator-( IOperand const &rhs ) const
 {
-    int result = std::stold(this->_value) - std::stold(rhs.getValue());
+    auto result = std::stold(this->_value) - std::stold(rhs.getValue());
     eOperandType type = std::max(this->getType(), rhs.getType());
     return Factory::instance().createOperand(type, std::to_string(result));
 }
 
 IOperand const * Float::operator*( IOperand const &rhs ) const
 {
-    int result = std::stold(this->_value) * std::stold(rhs.getValue());
+    auto result = std::stold(this->_value) * std::stold(rhs.getValue());
     eOperandType type = std::max(this->getType(), rhs.getType());
     return Factory::instance().createOperand(type, std::to_string(result));
 }
@@ -46,7 +46,7 @@ IOperand const * Float::operator/( IOperand const &rhs ) const
 {
     if (std::stold(rhs.getValue()) == 0)
         throw (VMException("EXCEPTION: Division by 0."));
-    int result = std::stold(this->_value) / std::stold(rhs.getValue());
+    auto result = std::stold(this->_value) / std::stold(rhs.getValue());
     eOperandType type = std::max(this->getType(), rhs.getType());
     return Factory::instance().createOperand(type, std::to_string(result));
 }

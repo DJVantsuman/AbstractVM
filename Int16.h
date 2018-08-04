@@ -11,7 +11,7 @@ class Int16 : public IOperand
 {
 private:
     std::string         _value;
-    eOperandType const  _type = eOperandType::INT8;
+    eOperandType const  _type = eOperandType::INT16;
     int                 _precision = 2;
 
     Int16();

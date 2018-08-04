@@ -24,41 +24,51 @@ Int32    &Int32::operator=( Int32 const &rhs )
 
 IOperand const * Int32::operator+( IOperand const &rhs ) const
 {
-    int result = std::stoi(this->_value) + std::stoi(rhs.getValue());
     eOperandType type = std::max(this->getType(), rhs.getType());
-    return Factory::instance().createOperand(type, std::to_string(result));
+    if (type < eOperandType::FLOAT)
+        return Factory::instance().createOperand(type, std::to_string(std::stoi(this->_value) + std::stoi(rhs.getValue())));
+    else
+        return Factory::instance().createOperand(type, std::to_string(std::stold(this->_value) + std::stold(rhs.getValue())));
 }
 
 IOperand const * Int32::operator-( IOperand const &rhs ) const
 {
-    int result = std::stoi(this->_value) - std::stoi(rhs.getValue());
     eOperandType type = std::max(this->getType(), rhs.getType());
-    return Factory::instance().createOperand(type, std::to_string(result));
+    if (type < eOperandType::FLOAT)
+        return Factory::instance().createOperand(type, std::to_string(std::stoi(this->_value) - std::stoi(rhs.getValue())));
+    else
+        return Factory::instance().createOperand(type, std::to_string(std::stold(this->_value) - std::stold(rhs.getValue())));
 }
 
 IOperand const * Int32::operator*( IOperand const &rhs ) const
 {
-    int result = std::stoi(this->_value) * std::stoi(rhs.getValue());
     eOperandType type = std::max(this->getType(), rhs.getType());
-    return Factory::instance().createOperand(type, std::to_string(result));
+    if (type < eOperandType::FLOAT)
+        return Factory::instance().createOperand(type, std::to_string(std::stoi(this->_value) * std::stoi(rhs.getValue())));
+    else
+        return Factory::instance().createOperand(type, std::to_string(std::stold(this->_value) * std::stold(rhs.getValue())));
 }
 
 IOperand const * Int32::operator/( IOperand const &rhs ) const
 {
-    if (std::stoi(rhs.getValue()) == 0)
+    if (std::stold(rhs.getValue()) == 0)
         throw (VMException("EXCEPTION: Division by 0."));
-    int result = std::stoi(this->_value) / std::stoi(rhs.getValue());
     eOperandType type = std::max(this->getType(), rhs.getType());
-    return Factory::instance().createOperand(type, std::to_string(result));
+    if (type < eOperandType::FLOAT)
+        return Factory::instance().createOperand(type, std::to_string(std::stoi(this->_value) / std::stoi(rhs.getValue())));
+    else
+        return Factory::instance().createOperand(type, std::to_string(std::stold(this->_value) / std::stold(rhs.getValue())));
 }
 
 IOperand const * Int32::operator%( IOperand const &rhs ) const
 {
-    if (std::stoi(rhs.getValue()) == 0)
+    if (std::stold(rhs.getValue()) == 0)
         throw (VMException("EXCEPTION: Modulo by 0."));
-    int result = std::stoi(this->_value) % std::stoi(rhs.getValue());
     eOperandType type = std::max(this->getType(), rhs.getType());
-    return Factory::instance().createOperand(type, std::to_string(result));
+    if (type < eOperandType::FLOAT)
+        return Factory::instance().createOperand(type, std::to_string(std::stoi(this->_value) % std::stoi(rhs.getValue())));
+    else
+        return Factory::instance().createOperand(type, std::to_string(static_cast<int64_t >(std::stold(this->_value)) % static_cast<int64_t >(std::stold(rhs.getValue()))));
 }
 
 std::string const & Int32::toString( void ) const

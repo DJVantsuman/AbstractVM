@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <regex>
 #include "virtualMachine.h"
 #include "VMException.h"
@@ -43,16 +44,27 @@ void validate(std::string str, VirtualMachine &vm)
     } else throw (VMException("EXCEPTION: An instruction is unknown."));
 }
 
-void readFile(VirtualMachine &vm)
+void readFile(VirtualMachine &vm, std::string file)
 {
+    std::string buff;
+    std::vector commands;
+    std::ifstream fin(file);
+    if(fin.is_open() && fin.good())
+    {
+        while (getline(fin, buff))
+        {
+            
+        }
+    }
 }
 
 void readStdin(VirtualMachine &vm)
 {
     std::string var = "";
-    while (var != "exit")
+    while (std::getline(std::cin, var))
     {
-        std::getline(std::cin, var);
+        if (var == ";;")
+            exit(0);
         validate(var,vm);
     }
 }
@@ -63,7 +75,7 @@ int main(int argc, char *argv[])
     static VirtualMachine& vm = VirtualMachine::instance();
     try {
         if (argc == 2)
-            readFile(vm);
+            readFile(vm, argv[1]);
         else if (argc == 1)
             readStdin(vm);
     }
